@@ -112,7 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('Camera active. Ready for manual scan.', 'success');
         } catch (err) {
             console.error('Webcam Access Error:', err);
-            showToast('Failed to access webcam. Check permissions.', 'error');
+            showToast(`Camera Error: ${err.name || err.message}`, 'error');
+            document.getElementById('gate-text-status').innerText = `Camera Error: ${err.name || err.message}`;
         }
     }
 

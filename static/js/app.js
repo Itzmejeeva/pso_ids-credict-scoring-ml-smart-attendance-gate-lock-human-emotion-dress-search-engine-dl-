@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 audio: false
             });
             video.srcObject = webcamStream;
+            await video.play().catch(e => console.error("Video play error:", e));
             
             // Hide camera placeholder overlay
             webcamOverlay.style.display = 'none';

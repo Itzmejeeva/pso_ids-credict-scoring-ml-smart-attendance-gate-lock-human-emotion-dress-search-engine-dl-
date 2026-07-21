@@ -43,21 +43,19 @@ async function initLiveness() {
     
     faceMesh.onResults(onResults);
     
-    // We hook into the existing video element
-    const camera = new Camera(videoElement, {
-        onFrame: async () => {
-            if(window.livenessPassed) return; // Stop checking if already passed
-            if(document.getElementById('toggle-auto-verify').checked) {
-                livenessMsg.style.display = 'block';
-                await faceMesh.send({image: videoElement});
-            } else {
-                livenessMsg.style.display = 'none';
-            }
-        },
-        width: 640,
-        height: 480
-    });
-    camera.start();
+    // We hook into the existing video element without starting a new Camera stream!
+    async function detectFaceMesh() {
+        if (!window.livenessPassed && document.getElementById('toggle-auto-verify')?.checked && videoElement.readyState >= 2) {
+            livenessMsg.style.display = 'block';
+            await faceMesh.send({image: videoElement});
+        } else {
+            if(livenessMsg) livenessMsg.style.display = 'none';
+        }
+        requestAnimationFrame(detectFaceMesh);
+    }
+    
+    // Start detection loop
+    detectFaceMesh();
 }
 
 function calculateEAR(landmarks, indices) {

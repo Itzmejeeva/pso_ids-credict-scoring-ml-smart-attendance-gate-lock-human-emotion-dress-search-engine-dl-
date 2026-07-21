@@ -142,8 +142,8 @@
                     </div>
                 </div>
 
-                <!-- Registered Users List -->
-                <div class="registry-box">
+                <!-- Registered Users List (Hidden for Privacy) -->
+                <div class="registry-box" id="admin-registry-box" style="display: none;">
                     <h4>Registered Personnel</h4>
                     <div class="registry-empty" id="registry-empty-msg">No authorized personnel registered.</div>
                     <div class="registry-grid" id="registry-users-list" style="display: none; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.75rem; max-height: 250px; overflow-y: auto; padding-right: 0.25rem; margin-top: 0.75rem;">
@@ -265,19 +265,22 @@
     <script>
         function toggleAdminMode() {
             const logsPanel = document.getElementById('admin-logs-panel');
+            const registryBox = document.getElementById('admin-registry-box');
             if (logsPanel.style.display === 'none' || logsPanel.style.display === '') {
-                const pwd = prompt("🔐 Enter Admin Password to view logs:");
+                const pwd = prompt("🔐 Enter Admin Password to view logs & registered users:");
                 if (pwd === "admin123") {
                     logsPanel.style.display = 'block';
+                    registryBox.style.display = 'block';
                     // Scroll to logs
                     setTimeout(() => { logsPanel.scrollIntoView({ behavior: 'smooth' }); }, 100);
-                    showToast("Admin Access Granted. Logs are now visible.", "success");
+                    showToast("Admin Access Granted. Data is now visible.", "success");
                 } else if (pwd !== null) {
                     showToast("Access Denied: Incorrect Password.", "error");
                 }
             } else {
                 logsPanel.style.display = 'none';
-                showToast("Admin Mode Locked. Logs hidden.", "info");
+                registryBox.style.display = 'none';
+                showToast("Admin Mode Locked. Data hidden.", "info");
             }
         }
     </script>
